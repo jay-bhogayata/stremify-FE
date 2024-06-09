@@ -5,6 +5,7 @@ import { SignupForm, SignupFormData } from "@/components/SignupForm";
 import { Toast } from "@/components/Toast";
 import { Toaster } from "@/components/ui/toaster";
 import api from "@/utils/api";
+import Link from "next/link";
 
 export default function Page() {
   const onSubmit = async (data: SignupFormData) => {
@@ -37,6 +38,12 @@ export default function Page() {
         description="Enter your name and email and password below to create to your account"
       >
         <SignupForm onSubmit={onSubmit} />
+        <div className="mt-4 text-center text-sm">
+          Already have an account?{" "}
+          <Link href="signin" className="underline">
+            Log in
+          </Link>
+        </div>
       </CardComponent>
     </div>
   );
