@@ -99,7 +99,7 @@ export function SigninForm({ onSubmit }: SignupFormProps) {
         )}
       </div>
       <Button type="submit" className="w-full font-semibold text-md">
-        Sign up
+        Sign in
       </Button>
     </form>
   );

@@ -6,8 +6,11 @@ import { Toast } from "@/components/Toast";
 import { Toaster } from "@/components/ui/toaster";
 import api from "@/utils/api";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
+
   const onSubmit = async (data: SigninFormData) => {
     try {
       const response = await api.post("/auth/login", data);
@@ -18,6 +21,8 @@ export default function Page() {
           description:
             "Logged in successfully. Redirecting you to the dashboard.",
         });
+        router.push("/profile");
+        router.refresh();
       } else {
         throw new Error(response.data.message);
       }

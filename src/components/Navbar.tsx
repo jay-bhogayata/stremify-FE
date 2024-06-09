@@ -4,8 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { User } from "@/lib/fetchUser";
+import { UserToolTip } from "./UserTollTip";
 
-export function Navbar() {
+export function Navbar({ user }: { user: User }) {
+  console.log(user);
+
   const pathname = usePathname();
   const isSignInRoute = pathname === "/signin";
 
@@ -22,12 +26,15 @@ export function Navbar() {
 
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <div className="ml-auto flex-1 sm:flex-initial"></div>
-
-        <Link href={isSignInRoute ? "signup" : "signin"}>
-          <Button type="submit" className="px-6  text-md font-semibold">
-            {isSignInRoute ? "Sign Up" : "Sign In"}
-          </Button>
-        </Link>
+        {user ? (
+          <UserToolTip />
+        ) : (
+          <Link href={isSignInRoute ? "signup" : "signin"}>
+            <Button type="submit" className="px-6  text-md font-semibold">
+              {isSignInRoute ? "Sign Up" : "Sign In"}
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );
