@@ -22,6 +22,7 @@ export default async function fetchUser(): Promise<User> {
   } catch (error) {
     user = null;
     console.error("An error occurred while fetching user data.");
+    console.error(error);
   }
 
   return user;
