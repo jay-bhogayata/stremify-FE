@@ -30,7 +30,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex justify-center items-center my-auto dark:bg-[#09090B] px-3">
+    <div className="flex justify-center items-center my-auto  px-3">
       <Toaster />
       <CardComponent
         title="Signup"
