@@ -12,6 +12,7 @@ export type User = {
 export default async function fetchUser(): Promise<User> {
   const session = cookies().get("sessionId");
   let user = null as User;
+  console.log("session", session);
   try {
     const response = await api.get("/auth/me", {
       headers: {
