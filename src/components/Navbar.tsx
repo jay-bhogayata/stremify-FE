@@ -8,8 +8,6 @@ import { User } from "@/lib/fetchUser";
 import { UserToolTip } from "./UserTollTip";
 
 export function Navbar({ user }: { user: User }) {
-  console.log(user);
-
   const pathname = usePathname();
   const isSignInRoute = pathname === "/signin";
 
