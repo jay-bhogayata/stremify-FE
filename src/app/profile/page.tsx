@@ -1,3 +1,4 @@
+import { Nav } from "@/components/Nav";
 import fetchUser from "@/lib/fetchUser";
 import { redirect } from "next/navigation";
 
@@ -7,13 +8,19 @@ export default async function Page() {
     redirect("/signin");
   }
   return (
-    <h1>
-      <h1>Profile</h1>
-      <h2>Id: {user?.id}</h2>
-      <h2>Name: {user?.name}</h2>
-      <h2>Email: {user?.email}</h2>
-      <h2>Role: {user?.role}</h2>
-      <h2>Verified: {user?.verified ? "Yes" : "No"}</h2>
-    </h1>
+    <>
+      <Nav />
+
+      <div className="flex flex-col justify-center items-center my-auto  px-3 ">
+        <h1 className="text-2xl font-semibold my-5 ">Profile</h1>
+        <div>
+          <h2>Id: {user?.id}</h2>
+          <h2>Name: {user?.name}</h2>
+          <h2>Email: {user?.email}</h2>
+          <h2>Role: {user?.role}</h2>
+          <h2>Verified: {user?.verified ? "Yes" : "No"}</h2>
+        </div>
+      </div>
+    </>
   );
 }

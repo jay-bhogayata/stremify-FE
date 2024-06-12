@@ -1,3 +1,4 @@
+"use client";
 /* eslint-disable @next/next/no-img-element */
 import { Button } from "./ui/button";
 import { User2 } from "lucide-react";
@@ -11,6 +12,7 @@ import {
 import { Toast } from "./Toast";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function UserToolTip() {
   const router = useRouter();
@@ -53,7 +55,9 @@ export function UserToolTip() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem>My Account</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href="/profile">My Profile</Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Button className="w-full" onClick={onSubmit}>

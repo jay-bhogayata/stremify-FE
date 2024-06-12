@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/Navbar";
-import fetchUser from "@/lib/fetchUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,12 +11,11 @@ export const metadata: Metadata = {
   description: "A video streaming platform",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await fetchUser();
   return (
     <html lang="en">
       <body
@@ -30,7 +28,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar user={user} />
+          <Navbar />
           {children}
         </ThemeProvider>
       </body>
