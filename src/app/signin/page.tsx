@@ -22,16 +22,15 @@ export default function Page() {
             "Logged in successfully. Redirecting you to the dashboard.",
         });
         router.push("/profile");
-        router.refresh();
       } else {
         throw new Error(response.data.message);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       Toast({
         variant: "destructive",
         title: "Error",
-        description: "An error occurred. Please try again.",
+        description: error.message,
       });
     }
   };
