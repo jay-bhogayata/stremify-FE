@@ -1,6 +1,5 @@
 "use client";
 import { MovieForm, MovieFormData } from "@/components/AddMovieForm";
-import { CardComponent } from "@/components/Card";
 
 import {
   Card,
@@ -26,7 +25,7 @@ export default function Page() {
           title: "Success",
           description: "Movie added successfully.",
         });
-        // router.push("/admin/movie");
+        router.push("/admin/movie");
       } else {
         throw new Error(response.data.message);
       }
@@ -60,7 +59,7 @@ type CardComponentProps = {
   children: React.ReactNode;
 };
 
-export function MovieCardComponent({
+function MovieCardComponent({
   title,
   description,
   children,

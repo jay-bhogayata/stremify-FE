@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { File, ListFilter, MoreHorizontal, PlusCircle } from "lucide-react";
+import { MoreHorizontal, PlusCircle } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 
@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/card";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -34,7 +33,7 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 
-export function Dashboard() {
+export default function Dashboard() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <div className="flex flex-col sm:gap-4 ">
@@ -146,5 +145,3 @@ export function Dashboard() {
     </div>
   );
 }
-
-export default Dashboard;
