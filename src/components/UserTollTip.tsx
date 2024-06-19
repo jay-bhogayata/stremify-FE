@@ -22,12 +22,6 @@ export function UserToolTip() {
       console.log("logging out");
       const response = await api.post("/auth/logout");
       if (response.status === 200) {
-        Toast({
-          variant: "default",
-          title: "Success",
-          description:
-            "Logged out successfully. Redirecting you to the homepage.",
-        });
         router.push("/");
         router.refresh();
       } else {
@@ -55,9 +49,11 @@ export function UserToolTip() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem>
-          <Link href="/profile">My Profile</Link>
-        </DropdownMenuItem>
+        <Link href="/profile">
+          <DropdownMenuItem className="hover:bg-none cursor-pointer">
+            My Profile
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Button className="w-full" onClick={onSubmit}>
