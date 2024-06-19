@@ -1,6 +1,7 @@
 "use client";
 
 import { CardComponent } from "@/components/Card";
+import { Navbar } from "@/components/Navbar";
 import { SignupForm, SignupFormData } from "@/components/SignupForm";
 import { Toast } from "@/components/Toast";
 import { Toaster } from "@/components/ui/toaster";
@@ -31,20 +32,23 @@ export default function Page() {
   };
 
   return (
-    <div className="flex justify-center items-center my-auto  px-3">
-      <Toaster />
-      <CardComponent
-        title="Signup"
-        description="Enter your name and email and password below to create to your account"
-      >
-        <SignupForm onSubmit={onSubmit} />
-        <div className="mt-4 text-center text-sm">
-          Already have an account?{" "}
-          <Link href="signin" className="underline">
-            Log in
-          </Link>
-        </div>
-      </CardComponent>
-    </div>
+    <>
+      <Navbar />
+      <div className="flex justify-center items-center my-auto  px-3">
+        <Toaster />
+        <CardComponent
+          title="Signup"
+          description="Enter your name and email and password below to create to your account"
+        >
+          <SignupForm onSubmit={onSubmit} />
+          <div className="mt-4 text-center text-sm">
+            Already have an account?{" "}
+            <Link href="signin" className="underline">
+              Log in
+            </Link>
+          </div>
+        </CardComponent>
+      </div>
+    </>
   );
 }
