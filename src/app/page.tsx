@@ -1,4 +1,6 @@
 import { Navbar } from "@/components/Navbar";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -9,7 +11,11 @@ export default function Home() {
         <h1 className="text-5xl py-10 font-semibold text-purple-500">
           welcome to stremify
         </h1>
-        <p>coming soon...</p>
+        <Link href="/movies">
+          <Button size="lg" className="h-12 gap-1">
+            <span className=" text-lg ">Explore Movies</span>
+          </Button>
+        </Link>
       </main>
     </>
   );
