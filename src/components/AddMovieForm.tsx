@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -7,6 +8,7 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useDropzone } from "react-dropzone";
 
 const MovieSchema = z.object({
   title: z.string().min(1, {
@@ -33,6 +35,8 @@ const MovieSchema = z.object({
   warnings: z.string().min(3, {
     message: "Warnings must be at least 3 characters long",
   }),
+  poster: z.instanceof(File),
+  backdrop: z.instanceof(File),
 });
 
 export type MovieFormData = z.infer<typeof MovieSchema>;
@@ -45,13 +49,89 @@ export function MovieForm({ onSubmit }: MovieFormProps) {
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<MovieFormData>({
     resolver: zodResolver(MovieSchema),
   });
 
+  // const [file, setFile] = useState<File | null>(null);
+  // const [preview, setPreview] = useState<string | null>(null);
+
+  // const onDrop = (acceptedFiles: File[]) => {
+  //   setFile(acceptedFiles[0]);
+  //   setPreview(URL.createObjectURL(acceptedFiles[0]));
+  //   setValue("poster", acceptedFiles[0]);
+  // };
+
+  // const { getRootProps, getInputProps } = useDropzone({
+  //   maxFiles: 1,
+  //   onDrop,
+  //   accept: {
+  //     "image/png": [".jpg", ".jpeg"],
+  //   },
+  // });
+
+  // useEffect(() => {
+  //   return () => {
+  //     if (preview) {
+  //       URL.revokeObjectURL(preview);
+  //     }
+  //   };
+  // }, [preview]);
+
+  const [posterFile, setPosterFile] = useState<File | null>(null);
+  const [posterPreview, setPosterPreview] = useState<string | null>(null);
+  const [backdropFile, setBackdropFile] = useState<File | null>(null);
+  const [backdropPreview, setBackdropPreview] = useState<string | null>(null);
+
+  const onDropPoster = (acceptedFiles: File[]) => {
+    setPosterFile(acceptedFiles[0]);
+    setPosterPreview(URL.createObjectURL(acceptedFiles[0]));
+    setValue("poster", acceptedFiles[0]);
+  };
+
+  const onDropBackdrop = (acceptedFiles: File[]) => {
+    setBackdropFile(acceptedFiles[0]);
+    setBackdropPreview(URL.createObjectURL(acceptedFiles[0]));
+    setValue("backdrop", acceptedFiles[0]);
+  };
+
+  const {
+    getRootProps: getRootPropsPoster,
+    getInputProps: getInputPropsPoster,
+  } = useDropzone({
+    maxFiles: 1,
+    onDrop: onDropPoster,
+    accept: {
+      "image/png": [".jpg", ".jpeg"],
+    },
+  });
+
+  const {
+    getRootProps: getRootPropsBackdrop,
+    getInputProps: getInputPropsBackdrop,
+  } = useDropzone({
+    maxFiles: 1,
+    onDrop: onDropBackdrop,
+    accept: {
+      "image/png": [".jpg", ".jpeg"],
+    },
+  });
+
+  useEffect(() => {
+    return () => {
+      if (posterPreview) {
+        URL.revokeObjectURL(posterPreview);
+      }
+      if (backdropPreview) {
+        URL.revokeObjectURL(backdropPreview);
+      }
+    };
+  }, [posterPreview, backdropPreview]);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4  ">
+    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
       <div className="grid gap-2">
         <Label htmlFor="title">Title</Label>
         <Controller
@@ -189,18 +269,64 @@ export function MovieForm({ onSubmit }: MovieFormProps) {
         )}
       </div>
 
+      <div className="grid gap-2">
+        <Label htmlFor="poster">Movie Poster</Label>
+        <Controller
+          name="poster"
+          control={control}
+          render={() => (
+            <div
+              {...getRootPropsPoster({
+                className: "border-2 w-full px-2 py-5",
+              })}
+            >
+              <input {...getInputPropsPoster()} />
+              <p>Drag drop some file here, or click to select file</p>
+              <em>(Only one file is allowed, only .png format)</em>
+            </div>
+          )}
+        />
+        {posterPreview && (
+          <div className="mt-4">
+            <img
+              src={posterPreview}
+              alt="Movie Poster Preview"
+              className="max-w-full h-auto"
+            />
+          </div>
+        )}
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="poster">Movie Backdrop</Label>
+        <Controller
+          name="backdrop"
+          control={control}
+          render={() => (
+            <div
+              {...getRootPropsBackdrop({
+                className: "border-2 w-full px-2 py-5",
+              })}
+            >
+              <input {...getInputPropsBackdrop()} />
+              <p>Drag drop some file here, or click to select file</p>
+              <em>(Only one file is allowed, only .png format)</em>
+            </div>
+          )}
+        />
+        {backdropPreview && (
+          <div className="mt-4">
+            <img
+              src={backdropPreview}
+              alt="Movie Poster Preview"
+              className="max-w-full h-auto"
+            />
+          </div>
+        )}
+      </div>
+
       <Button type="submit" className="w-full font-semibold text-md">
         Submit
       </Button>
     </form>
   );
 }
-
-// Top Gun: Maverick
-// 2020
-// 120
-// After thirty years, Maverick is still pushing the envelope as a top naval aviator, but must confront ghosts of his past when he leads TOP GUN's elite graduates on a mission that demands the ultimate sacrifice from those chosen to fly it.
-// PG-13
-// Action , Drama
-// Tom Cruise, Jennifer Connelly, Val Kilmer
-// Language, Violence
