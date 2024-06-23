@@ -9,17 +9,8 @@ export function Navbar() {
   const pathname = usePathname();
   const isSignInRoute = pathname === "/signin";
 
-  if (
-    pathname !== "/" &&
-    pathname !== "/signin" &&
-    pathname !== "/signup" &&
-    pathname !== "/verify"
-  ) {
-    return null;
-  }
-
   return (
-    <div className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-5 md:px-10 ">
+    <div className="fixed z-50 top-0 left-0 right-0 flex h-16 items-center gap-4 border-b bg-background px-5 md:px-10">
       <nav className="flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           href="/"
@@ -31,7 +22,7 @@ export function Navbar() {
 
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <div className="ml-auto flex-1 sm:flex-initial"></div>
-        <Link href={isSignInRoute ? "signup" : "signin"}>
+        <Link href={isSignInRoute ? "/signup" : "/signin"}>
           <Button type="submit" className="px-6  text-md font-semibold">
             {isSignInRoute ? "Sign Up" : "Sign In"}
           </Button>
