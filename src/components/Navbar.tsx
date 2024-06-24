@@ -10,7 +10,7 @@ export function Navbar() {
   const isSignInRoute = pathname === "/signin";
 
   return (
-    <div className="fixed z-50 top-0 left-0 right-0 flex h-16 items-center gap-4 border-b bg-background px-5 md:px-10">
+    <div className="fixed z-50 top-0 left-0 right-0 flex h-14 items-center gap-4 border-b bg-background px-5 md:px-10">
       <nav className="flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           href="/"
