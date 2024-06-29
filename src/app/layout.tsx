@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/Navbar";
+import { AuthStoreProvider } from "@/components/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} flex flex-col min-h-screen dark:bg-[#09090B]`}
+        className={`${inter.className} flex flex-col min-h-screen `}
         suppressHydrationWarning={true}
       >
         <ThemeProvider
@@ -28,7 +29,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AuthStoreProvider>
+            <Navbar />
+            {children}
+          </AuthStoreProvider>
         </ThemeProvider>
       </body>
     </html>
