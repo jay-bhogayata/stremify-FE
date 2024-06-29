@@ -1,45 +1,28 @@
 "use client";
-
 import { CardComponent } from "@/components/Card";
 import { Navbar } from "@/components/Navbar";
 import { SigninForm, SigninFormData } from "@/components/SigninForm";
-import { Toast } from "@/components/Toast";
 import { Toaster } from "@/components/ui/toaster";
-import api from "@/utils/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/components/AuthProvider";
 
 export default function Page() {
   const router = useRouter();
+  const signIn = useAuthStore((state) => state.signIn);
 
   const onSubmit = async (data: SigninFormData) => {
     try {
-      const response = await api.post("/auth/login", data);
-      if (response.status === 200) {
-        Toast({
-          variant: "default",
-          title: "Success",
-          description:
-            "Logged in successfully. Redirecting you to the dashboard.",
-        });
-        router.push("/profile");
-      } else {
-        throw new Error(response.data.message);
-      }
-    } catch (error: any) {
-      console.error(error);
-      Toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
+      await signIn(data.email, data.password);
+      router.push("/profile");
+    } catch (error) {
+      // Error is already handled in the signIn function
     }
   };
 
   return (
     <>
-      <Navbar />
-      <div className="flex justify-center items-center my-auto  px-3">
+      <div className="flex justify-center items-center my-auto px-3">
         <Toaster />
         <CardComponent
           title="Signin"

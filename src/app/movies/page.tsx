@@ -6,8 +6,8 @@ export default async function Page() {
   const response = await api.get("content/movies/all");
   const movies = response.data;
   return (
-    <>
-      <div className=" px-10 mt-10 flex w-full  items-center justify-center">
+    <div>
+      <div className=" px-10 flex w-full  items-center justify-center">
         <h1 className="text-3xl font-semibold text-purple-500">
           Explore the latest movies on Stremify
         </h1>
@@ -21,6 +21,6 @@ export default async function Page() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

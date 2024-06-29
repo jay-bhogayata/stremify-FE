@@ -51,7 +51,7 @@ const Details = ({ movie }: { movie: Movie }) => {
     "";
 
   return (
-    <div className="relative min-h-screen flex flex-col text-white">
+    <div className="relative mt-4 min-h-screen flex flex-col text-white">
       <div className="absolute inset-0 z-0">
         <Image
           src={backdropImage}

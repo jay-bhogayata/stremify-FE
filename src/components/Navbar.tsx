@@ -1,13 +1,13 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import { Button } from "@/components/ui/button";
+import { UserTollTip } from "./UserTollTip";
+import { useAuthStore } from "@/components/AuthProvider";
 
 export function Navbar() {
   const pathname = usePathname();
-  const isSignInRoute = pathname === "/signin";
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   return (
     <div className="fixed z-50 top-0 left-0 right-0 flex h-14 items-center gap-4 border-b bg-background px-5 md:px-10">
@@ -19,14 +19,17 @@ export function Navbar() {
           <h1 className="font-bold text-2xl text-violet-600">Stremify</h1>
         </Link>
       </nav>
-
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <div className="ml-auto flex-1 sm:flex-initial"></div>
-        <Link href={isSignInRoute ? "/signup" : "/signin"}>
-          <Button type="submit" className="px-6  text-md font-semibold">
-            {isSignInRoute ? "Sign Up" : "Sign In"}
-          </Button>
-        </Link>
+        {isLoggedIn ? (
+          <UserTollTip />
+        ) : (
+          <Link href={pathname === "/signin" ? "/signup" : "/signin"}>
+            <Button type="submit" className="px-6 text-md font-semibold">
+              {pathname === "/signin" ? "Sign Up" : "Sign In"}
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );

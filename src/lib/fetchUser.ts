@@ -1,17 +1,10 @@
+import { User } from "@/types";
 import api from "@/utils/api";
 import { cookies } from "next/headers";
 
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  verified: boolean;
-} | null;
-
 export default async function fetchUser(): Promise<User> {
   const session = cookies().get("sessionId");
-  let user = null as User;
+  let user: User | null = null;
 
   try {
     const response = await api.get("/auth/me", {
@@ -25,5 +18,5 @@ export default async function fetchUser(): Promise<User> {
     console.error("An error occurred while fetching user data.");
   }
 
-  return user;
+  return user || ({} as User);
 }

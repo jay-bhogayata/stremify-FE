@@ -33,7 +33,6 @@ export default function Page() {
 
   return (
     <>
-      <Navbar />
       <div className="flex justify-center items-center my-auto  px-3">
         <Toaster />
         <CardComponent
