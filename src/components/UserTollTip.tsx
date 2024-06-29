@@ -1,5 +1,4 @@
 "use client";
-/* eslint-disable @next/next/no-img-element */
 import { Button } from "./ui/button";
 import { User2 } from "lucide-react";
 import {
@@ -9,32 +8,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Toast } from "./Toast";
-import api from "@/utils/api";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuthStore } from "@/components/AuthProvider";
+import { useRouter } from "next/navigation";
 
-export function UserToolTip() {
+export function UserTollTip() {
+  const signOut = useAuthStore((state) => state.signOut);
   const router = useRouter();
 
-  const onSubmit = async () => {
-    try {
-      console.log("logging out");
-      const response = await api.post("/auth/logout");
-      if (response.status === 200) {
-        router.push("/");
-        router.refresh();
-      } else {
-        throw new Error(response.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      Toast({
-        variant: "destructive",
-        title: "Error",
-        description: "An error occurred. Please try again.",
-      });
-    }
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/");
+    router.refresh(); // This will trigger a re-render and show the loading state
   };
 
   return (
@@ -56,7 +41,7 @@ export function UserToolTip() {
         </Link>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Button className="w-full" onClick={onSubmit}>
+          <Button className="w-full" onClick={handleSignOut}>
             Logout
           </Button>
         </DropdownMenuItem>
