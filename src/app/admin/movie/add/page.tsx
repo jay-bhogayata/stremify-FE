@@ -49,7 +49,7 @@ export default function Page() {
           title: "Success",
           description: "Movie added successfully.",
         });
-        // router.push("/admin/movie");
+        router.push("/admin/movie");
       } else {
         throw new Error(response.data.message);
       }
@@ -65,7 +65,7 @@ export default function Page() {
   };
 
   return (
-    <div className="px-10 py-5">
+    <div className=" px-10 py-20">
       <Toaster />
       <MovieCardComponent
         title="Add a Movie"
