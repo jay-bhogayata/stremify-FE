@@ -6,7 +6,7 @@ export default async function Page() {
   const response = await api.get("content/movies/all");
   const movies = response.data;
   return (
-    <div>
+    <div className="mt-32">
       <div className=" px-10 flex w-full  items-center justify-center">
         <h1 className="text-3xl font-semibold text-purple-500">
           Explore the latest movies on Stremify

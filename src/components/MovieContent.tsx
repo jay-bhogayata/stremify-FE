@@ -186,6 +186,14 @@ function StartWatchingSection() {
 }
 
 function AdditionalInfo({ movie }: { movie: Movie }) {
+  if (!movie?.additional_info) {
+    return (
+      <div className="text-center text-white">
+        No additional information available.
+      </div>
+    );
+  }
+
   return (
     <div className="relative z-10 py-12 bg-black bg-opacity-50">
       <div className="container mx-auto px-4">

@@ -12,7 +12,7 @@ export default function Movie({ data }: { data: any }) {
     <>
       <div
         key={data.movie_id}
-        className="relative shadow-md rounded-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105 cursor-pointer bg-pink-500"
+        className="relative shadow-md rounded-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105 cursor-pointer"
       >
         <img
           className=" w-auto object-contain border-2 border-gray-200 rounded-lg hover:bg-black hover:bg-opacity-50 transition duration-500 ease-in-out"
