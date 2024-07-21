@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Check } from "lucide-react";
 import {
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation";
 
 export default function PricingPage() {
   const benefits = [
@@ -20,6 +22,8 @@ export default function PricingPage() {
     "Exclusive content access",
     "24/7 customer support",
   ];
+
+  const router = useRouter();
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -40,6 +44,9 @@ export default function PricingPage() {
           <Button
             className="w-full bg-white text-indigo-700 hover:bg-indigo-100"
             size="lg"
+            onClick={() => {
+              router.push("/pay");
+            }}
           >
             Unlock Premiere Access
           </Button>
