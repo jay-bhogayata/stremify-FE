@@ -92,8 +92,24 @@ function CheckoutForm() {
   );
 }
 
+function LoadingSpinner() {
+  return (
+    <div className="flex items-center justify-center">
+      <div
+        className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-white motion-reduce:animate-[spin_1.5s_linear_infinite]"
+        role="status"
+      >
+        <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+          Loading...
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function SubscribePage() {
   const [clientSecret, setClientSecret] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchClientSecret = async () => {
@@ -104,13 +120,20 @@ export default function SubscribePage() {
         setClientSecret(response.data.clientSecret.clientSecret);
       } catch (error) {
         console.error("Error fetching client secret:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchClientSecret();
   }, []);
 
-  if (!clientSecret) {
-    return <div className="text-white text-center text-xl">Loading...</div>;
+  if (isLoading || !clientSecret) {
+    return (
+      <div className="min-h-screen w-full flex flex-col justify-center items-center bg-gray-900 text-white p-6">
+        <LoadingSpinner />
+        <p className="mt-4 text-xl">Loading payment form...</p>
+      </div>
+    );
   }
 
   return (
