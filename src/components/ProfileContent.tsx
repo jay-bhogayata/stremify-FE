@@ -1,104 +1,238 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/components/AuthProvider";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { User, Mail, UserCheck, CheckCircle } from "lucide-react";
+import {
+  User,
+  Mail,
+  UserCheck,
+  CheckCircle,
+  Calendar,
+  Package,
+  Film,
+  Trophy,
+  Clock,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import api from "@/utils/api";
+import { useAuthStore } from "./AuthProvider";
 
-export default function ProfileContent() {
-  const router = useRouter();
-  const { user, isLoggedIn, fetchAuth } = useAuthStore((state) => ({
-    user: state.user,
-    isLoggedIn: state.isLoggedIn,
-    fetchAuth: state.fetchAuth,
-  }));
-  const [isLoading, setIsLoading] = useState(true);
+interface UserType {
+  id: string;
+  email: string;
+  name: string;
+}
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      if (!isLoggedIn) {
-        await fetchAuth();
-      }
-      setIsLoading(false);
-    };
-    checkAuth();
-  }, [isLoggedIn, fetchAuth]);
+interface SubscriptionInfo {
+  status: string;
+  planId: string;
+  currentPeriodStart: string;
+  currentPeriodEnd: string;
+  cancelAtPeriodEnd: boolean;
+  canceledAt?: string;
+  endedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen dark:text-gray-200">
-        Loading...
-      </div>
-    );
-  }
+interface ProfileItemProps {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  highlight?: boolean;
+}
 
-  if (!user) {
-    router.push("/signin");
-    return null;
-  }
-
-  return (
-    <div className="flex flex-col px-5 items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
-      <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-8 max-w-md w-full transition-colors duration-200">
-        <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-gray-100">
-          Profile
-        </h1>
-        <div className="space-y-6">
-          <ProfileItem
-            icon={<User className="text-blue-500 dark:text-blue-400" />}
-            label="Name"
-            value={user.name}
-          />
-          <ProfileItem
-            icon={<Mail className="text-blue-500 dark:text-blue-400" />}
-            label="Email"
-            value={user.email}
-          />
-          <ProfileItem
-            icon={<UserCheck className="text-blue-500 dark:text-blue-400" />}
-            label="Role"
-            value={user.role}
-          />
-          <ProfileItem
-            icon={<CheckCircle className="text-blue-500 dark:text-blue-400" />}
-            label="Verified"
-            value={user.verified ? "Yes" : "No"}
-          />
-        </div>
-        {user.role === "admin" && (
-          <div className="mt-8">
-            <Link href="/admin">
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-bold py-2 px-4 rounded transition-colors duration-200">
-                Admin Dashboard
-              </Button>
-            </Link>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+interface AuthStore {
+  user: UserType | null;
+  isLoggedIn: boolean;
+  fetchAuth: () => Promise<void>;
 }
 
 function ProfileItem({
   icon,
   label,
   value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-}) {
+  highlight = false,
+}: ProfileItemProps) {
   return (
-    <div className="flex items-center space-x-4">
-      <div className="text-xl">{icon}</div>
-      <div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
-        <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-          {value}
+    <Card
+      className={`transition-all duration-300 hover:scale-105 ${
+        highlight ? "border-purple-500 bg-purple-50 dark:bg-purple-900/20" : ""
+      }`}
+    >
+      <CardContent className="flex items-center space-x-4 p-6">
+        <div
+          className={`text-2xl ${
+            highlight ? "text-purple-500" : "text-gray-600 dark:text-gray-300"
+          }`}
+        >
+          {icon}
+        </div>
+        <div className="flex-1">
+          <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
+          <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+            {value}
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+const StreamingStats = () => {
+  const stats = [
+    {
+      icon: <Film className="text-blue-500" />,
+      value: "247",
+      label: "Watched Movies",
+    },
+    {
+      icon: <Clock className="text-green-500" />,
+      value: "892",
+      label: "Hours Streamed",
+    },
+    {
+      icon: <Trophy className="text-yellow-500" />,
+      value: "Premium",
+      label: "Member Status",
+    },
+  ];
+
+  return (
+    <div className="grid grid-cols-3 gap-4 mb-8">
+      {stats.map((stat, index) => (
+        <Card
+          key={index}
+          className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900"
+        >
+          <CardContent className="flex flex-col items-center justify-center p-6">
+            <div className="text-3xl mb-2">{stat.icon}</div>
+            <h3 className="text-2xl font-bold mb-1">{stat.value}</h3>
+            <p className="text-gray-500 dark:text-gray-400">{stat.label}</p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+};
+
+export default function ProfileContent() {
+  const router = useRouter();
+  const { user, isLoggedIn, fetchAuth } = useAuthStore((state: AuthStore) => ({
+    user: state.user,
+    isLoggedIn: state.isLoggedIn,
+    fetchAuth: state.fetchAuth,
+  }));
+  const [isLoading, setIsLoading] = useState(true);
+  const [subInfo, setSubInfo] = useState<SubscriptionInfo | null>(null);
+
+  useEffect(() => {
+    const fetchSubInfo = async () => {
+      try {
+        const response = await api.get("/sub-info");
+        setSubInfo(response.data.userSubInfo);
+      } catch (error) {
+        console.error("Failed to fetch subscription info:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const checkAuth = async () => {
+      if (!isLoggedIn) {
+        await fetchAuth();
+      }
+      fetchSubInfo();
+    };
+
+    checkAuth();
+  }, [isLoggedIn, fetchAuth]);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-7xl mx-auto p-6 space-y-8 mt-12">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
+          Your Stremify Profile
+        </h1>
+        <p className="text-gray-600 dark:text-gray-300">
+          Manage your account and subscription details
         </p>
       </div>
+
+      <StreamingStats />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {user && (
+          <>
+            <ProfileItem icon={<User />} label="User ID" value={user.id} />
+            <ProfileItem icon={<Mail />} label="Email" value={user.email} />
+            <ProfileItem
+              icon={<UserCheck />}
+              label="Name"
+              value={user.name}
+              highlight={true}
+            />
+          </>
+        )}
+      </div>
+
+      {subInfo && (
+        <div className="mt-12">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold flex items-center gap-2">
+                <Package className="text-purple-500" />
+                Subscription Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <ProfileItem
+                icon={<CheckCircle />}
+                label="Status"
+                value={subInfo.status}
+                highlight={subInfo.status === "active"}
+              />
+              <ProfileItem
+                icon={<Package />}
+                label="Plan ID"
+                value={subInfo.planId}
+              />
+              <ProfileItem
+                icon={<Calendar />}
+                label="Current Period Start"
+                value={new Date(
+                  subInfo.currentPeriodStart
+                ).toLocaleDateString()}
+              />
+              <ProfileItem
+                icon={<Calendar />}
+                label="Current Period End"
+                value={new Date(subInfo.currentPeriodEnd).toLocaleDateString()}
+              />
+              <ProfileItem
+                icon={<CheckCircle />}
+                label="Cancel At Period End"
+                value={subInfo.cancelAtPeriodEnd ? "Yes" : "No"}
+              />
+              {subInfo.canceledAt && (
+                <ProfileItem
+                  icon={<Calendar />}
+                  label="Canceled At"
+                  value={new Date(subInfo.canceledAt).toLocaleDateString()}
+                />
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }
