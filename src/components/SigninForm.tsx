@@ -23,9 +23,10 @@ export type SigninFormData = z.infer<typeof signinSchema>;
 
 type SignupFormProps = {
   onSubmit: (data: SigninFormData) => void;
+  loading: boolean;
 };
 
-export function SigninForm({ onSubmit }: SignupFormProps) {
+export function SigninForm({ onSubmit, loading }: SignupFormProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassword = () => {
@@ -98,8 +99,12 @@ export function SigninForm({ onSubmit }: SignupFormProps) {
           </p>
         )}
       </div>
-      <Button type="submit" className="w-full font-semibold text-md">
-        Sign in
+      <Button
+        type="submit"
+        className="w-full font-semibold text-md"
+        disabled={loading}
+      >
+        {loading ? "Loading..." : "Sign in"}
       </Button>
     </form>
   );
