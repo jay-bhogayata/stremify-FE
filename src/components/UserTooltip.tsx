@@ -12,14 +12,14 @@ import Link from "next/link";
 import { useAuthStore } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
 
-export function UserTollTip() {
+export function UserToolTip() {
   const signOut = useAuthStore((state) => state.signOut);
   const router = useRouter();
 
   const handleSignOut = async () => {
     await signOut();
     router.push("/");
-    router.refresh(); // This will trigger a re-render and show the loading state
+    router.refresh();
   };
 
   return (
