@@ -10,6 +10,7 @@ export interface AuthState {
   fetchAuth: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  updateSession: () => Promise<void>;
 }
 
 const createAuthSlice: StateCreator<AuthState> = (set) => ({
@@ -43,6 +44,19 @@ const createAuthSlice: StateCreator<AuthState> = (set) => ({
       console.error("Error signing in:", error);
       set({ loading: false });
       throw error;
+    }
+  },
+  updateSession: async () => {
+    try {
+      const response = await api.get("/auth/updateSession");
+      console.log("updateSession response", response);
+      if (response.status === 200) {
+        set({ isLoggedIn: true, user: response.data.user, loading: false });
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (error: any) {
+      console.error("Error updating session:", error);
     }
   },
   signOut: async () => {

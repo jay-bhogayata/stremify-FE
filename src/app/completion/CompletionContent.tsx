@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
+import { useAuthStore } from "@/components/AuthProvider";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -12,6 +13,7 @@ export default function CompletionContent() {
   const [status, setStatus] = useState<string | null>(null);
   const [paymentIntent, setPaymentIntent] = useState<any>(null);
   const searchParams = useSearchParams();
+  const updateSession = useAuthStore((state) => state.updateSession);
 
   useEffect(() => {
     const clientSecret = searchParams.get("payment_intent_client_secret");
@@ -42,6 +44,10 @@ export default function CompletionContent() {
         Loading...
       </div>
     );
+  }
+
+  if (status === "succeeded") {
+    updateSession();
   }
 
   return (
