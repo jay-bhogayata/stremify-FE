@@ -79,43 +79,6 @@ function ProfileItem({
   );
 }
 
-const StreamingStats = () => {
-  const stats = [
-    {
-      icon: <Film className="text-blue-500" />,
-      value: "247",
-      label: "Watched Movies",
-    },
-    {
-      icon: <Clock className="text-green-500" />,
-      value: "892",
-      label: "Hours Streamed",
-    },
-    {
-      icon: <Trophy className="text-yellow-500" />,
-      value: "Premium",
-      label: "Member Status",
-    },
-  ];
-
-  return (
-    <div className="grid grid-cols-3 gap-4 mb-8">
-      {stats.map((stat, index) => (
-        <Card
-          key={index}
-          className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900"
-        >
-          <CardContent className="flex flex-col items-center justify-center p-6">
-            <div className="text-3xl mb-2">{stat.icon}</div>
-            <h3 className="text-2xl font-bold mb-1">{stat.value}</h3>
-            <p className="text-gray-500 dark:text-gray-400">{stat.label}</p>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
-};
-
 export default function ProfileContent() {
   const router = useRouter();
   const { user, isLoggedIn, fetchAuth } = useAuthStore((state: AuthStore) => ({
@@ -166,8 +129,6 @@ export default function ProfileContent() {
           Manage your account and subscription details
         </p>
       </div>
-
-      <StreamingStats />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {user && (
